@@ -78,7 +78,7 @@ public class RFIDPlugin {
       return false;
     }
     else {
-      cReader.startInventory(true);
+      cReader.startInventory(false);
       Log.i(TAG, "Inventory Starting to scan...");
       return true;
     }
@@ -226,6 +226,7 @@ public class RFIDPlugin {
             if (!cReader.isInventory()) {
               startInventory(); // Start scanning if not already scanning
             } else {
+              scannedTag.clear();
               stopInventory(); // Stop scanning if already scanning
             }
           }

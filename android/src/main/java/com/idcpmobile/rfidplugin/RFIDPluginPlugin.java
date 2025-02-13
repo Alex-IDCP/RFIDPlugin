@@ -105,7 +105,7 @@ public class RFIDPluginPlugin extends Plugin {
     // Ensure scannedTags is empty before starting inventory
     scannedTags.clear();
 
-    cReader.startInventory(true); // Set to `false` if no TID required
+    cReader.startInventory(false); // Set to `false` if no TID required
     JSObject response = new JSObject();
     response.put("status", "inventory_started");
     call.resolve(response);
@@ -167,16 +167,16 @@ public class RFIDPluginPlugin extends Plugin {
               break;
             }
           }
-
+          RfidData existingTag = new RfidData();;
+          RfidData newTag = new RfidData();;
           if (index != -1) {
             // Tag already exists, update its count
-            RfidData existingTag = scannedTags.get(index);
+            existingTag = scannedTags.get(index);
             existingTag.setNum(existingTag.getNum() + 1); // Increment the count
             existingTag.setRssi(epcTag.getRssi()); // Update RSSI
             scannedTags.set(index, existingTag); // Update the list
           } else {
             // Add new tag to the list
-            RfidData newTag = new RfidData();
             newTag.setEpc(epc);
             newTag.setTid(epcTag.getTid());
             newTag.setNum(1); // Initial count is 1
@@ -186,6 +186,8 @@ public class RFIDPluginPlugin extends Plugin {
 
           // Log the tag and show a toast
           Log.d(TAG, "Scanned tag: " + epc);
+          Log.d(TAG, "Existing tag count: " + existingTag.getNum());
+          Log.d(TAG, "New tag count: " + newTag.getNum());
           // Post the Toast display to the main thread:
 //        new Handler(Looper.getMainLooper()).post(() ->
 //          Toast.makeText(getContext(), "Scanned tag: " + epc, Toast.LENGTH_SHORT).show()
@@ -240,7 +242,7 @@ public class RFIDPluginPlugin extends Plugin {
   private void startInventory() {
     Log.d(TAG, "Starting inventory...");
     // Start inventory; the boolean parameter may depend on whether you need TID reading, etc.
-    cReader.startInventory(true);
+    cReader.startInventory(false);
     // Optionally, notify your application/UI that scanning has started.
     JSObject data = new JSObject();
     data.put("status", "started");
@@ -248,9 +250,9 @@ public class RFIDPluginPlugin extends Plugin {
   }
 
   private void stopInventory() {
+    cReader.stopInventory();
     Log.d(TAG, "Stopping inventory...");
     scannedTags.clear();
-    cReader.stopInventory();
     // Optionally, notify your application/UI that scanning has stopped.
     JSObject data = new JSObject();
     data.put("status", "stopped");
