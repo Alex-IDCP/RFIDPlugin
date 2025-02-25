@@ -10,8 +10,10 @@ buildscript {
         google()
         mavenCentral()
     }
+    ext.kotlin_version = '1.8.22'
     dependencies {
         classpath 'com.android.tools.build:gradle:8.7.2'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
 
@@ -46,7 +48,7 @@ repositories {
     google()
     mavenCentral()
     flatDir {
-        dirs 'libs'
+      dirs 'C:/IDCP/Vscode/idcp-mobile/rfidplugin/android/libs'  // This makes it clear the folder is relative to the module directory.
     }
 }
 
