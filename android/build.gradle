@@ -48,7 +48,7 @@ repositories {
     google()
     mavenCentral()
     flatDir {
-      dirs 'C:/IDCP/Vscode/idcp-mobile/rfidplugin/android/libs'  // This makes it clear the folder is relative to the module directory.
+      dirs '../../../rfidplugin/android/libs'  // This makes it clear the folder is relative to the module directory.
     }
 }
 
